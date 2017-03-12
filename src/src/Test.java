@@ -43,8 +43,11 @@ final public class Test {
         Socket socket;
         BufferedReader reader;
         int[] leftTurnTime = new int[]{3};
-        int[] currentStreetTime = new int[]{3,12};
-        int[] currentStreetTimeDuration = new int[]{3,5};
+        int[] leftTurnTimeDuration = new int[]{5};
+
+        int[] currentStreetTime = new int[]{5};
+        int[] currentStreetTimeDuration = new int[]{10};
+
         int[] lowTireTime = new int[]{21, 27};
         int[] directionTime = new int[]{30,37};
         int[] speedLimitTime = new int[]{40};
@@ -53,24 +56,17 @@ final public class Test {
 
         Image turnLeftImage, speedLimitImageOne, speedLimitImageTwo, lowTirePressureImage, compassImage;
 
-        //String baseDirectory = "images/";
-
         public DrawPanel() {
             try {
                 listener = new ServerSocket(3001);
                 socket = listener.accept();
                 reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 System.out.println("Client Connected!");
-                //added in
-                    turnLeftImage = ImageIO.read(getClass().getResource("turnRight.png"));
+                System.out.println("Game actually started: " + System.currentTimeMillis());
+                    turnLeftImage = ImageIO.read(getClass().getResource("leftTurn.png"));
                     speedLimitImageOne = ImageIO.read(getClass().getResource("firstSpeedLimitSign.png"));
                     speedLimitImageTwo = ImageIO.read(getClass().getResource("secondSpeedLimitSign.png"));
-//                    //trafficAheadImage = ImageIO.read(getClass().getResource("trafficAhead.png"));
-//                    //trafficAheadImage = ImageIO.read(getClass().getResource(baseDirectory + "lowTirePressure.png"));
-                    lowTirePressureImage = ImageIO.read(getClass().getResource("lowTirePressure.png"));
                     compassImage = ImageIO.read(getClass().getResource("directionAndCompass.png"));
-
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -83,22 +79,20 @@ final public class Test {
 //            /* left turn signal */
 //            for(int i =0; i < leftTurnTime.length; i++) {
 //                long time1 = leftTurnTime[i]*1000;
-//                if (elapsedTime > time1 && (elapsedTime<time1 +4000)) {
-//                    System.out.println("Here");
+//                if (elapsedTime > time1 && (elapsedTime<time1 +1000*leftTurnTimeDuration[i])) {
 //                    g.drawImage(turnLeftImage, 900, 1100, turnLeftImage.getWidth(null), turnLeftImage.getHeight(null), null);
 //                }
 //            }
-
+//
 //             /* first speed limit */
 //            for(int i =0; i < speedLimitTime.length; i++) {
 //                System.out.println("i:"+i);
 //                long time2 = speedLimitTime[i]*1000;
 //                if (elapsedTime > time2 && (elapsedTime<time2 +1000)) {
-//                    System.out.println("elapsed time");
 //                    g.drawImage(speedLimitImageOne, 1000, 1100, speedLimitImageOne.getWidth(null), speedLimitImageOne.getHeight(null), null);
 //                }
 //            }
-
+//
 //             /* second speed limit */
 //            for(int i =0; i < speedLimitTime.length; i++) {
 //                long time2 = speedLimitTime[i]*1000;
@@ -106,7 +100,7 @@ final public class Test {
 //                    g.drawImage(speedLimitImageTwo, 1000, 1100, speedLimitImageTwo.getWidth(null), speedLimitImageTwo.getHeight(null), null);
 //                }
 //            }
-//
+
             /* current street */
             for(int i = 0; i < currentStreetTime.length; i++) {
                 long time3 = currentStreetTime[i]*1000;
@@ -116,7 +110,7 @@ final public class Test {
                         g.drawString("Market St", 1100, 1200);
                 }
             }
-//
+
 //            /* low tire pressure */
 //            for(int i =0; i < lowTireTime.length; i++) {
 //                long time4 = lowTireTime[i]*1000;
