@@ -2,23 +2,24 @@ package src;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.imageio.ImageIO;
 
 final public class Test {
     static JFrame frame;
     static DrawPanel drawPanel;
 
-    public static void main(String... args) {
+    public static void main(String... args) throws FileNotFoundException {
         System.out.println("Game started:" + System.currentTimeMillis());
         Test.go();
     }
 
-    private static void go() {
+    private static void go() throws FileNotFoundException {
         frame = new JFrame("Test");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -76,8 +77,9 @@ final public class Test {
 
         Image turnLeftImage, speedLimitImageOne, speedLimitImageTwo, lowTirePressureImage, compassImage, navImage;
 
-        public DrawPanel() {
+        public DrawPanel() throws FileNotFoundException {
             try {
+                writer = new PrintWriter(new File("test.txt"));
                 listener = new ServerSocket(3001);
                 socket = listener.accept();
                 reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -92,21 +94,24 @@ final public class Test {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
+
+        PrintWriter writer;
         public void paintComponent(Graphics g) {
             System.out.println("Current time: " + System.currentTimeMillis());
+            DateFormat formatter1;
+
+
+            formatter1 = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
+            Date date = new Date(System.currentTimeMillis());
+            System.out.println(formatter1.format(date));
+            writer.write(formatter1.format(date) + "\n");
+            writer.flush();
+
             long currentTime = System.currentTimeMillis();
             long elapsedTime = currentTime - startTime;
 
-//            /* left turn signal */
-//            for(int i =0; i < leftTurnTime.length; i++) {
-//                long time1 = leftTurnTime[i]*1000;
-//                int leftWidth = (turnLeftImage.getWidth(null)/3);
-//                int leftHeight = (turnLeftImage.getHeight(null)/3);
-//                if (elapsedTime > time1 && (elapsedTime<time1 +1000*leftTurnTimeDuration[i])) {
-//                    g.drawImage(turnLeftImage, 1000, 1200, leftWidth, leftHeight, null);
-//                }
-//            }
 
             /* first speed limit */
             for(int i =0; i < firstSpeedLimitTime.length; i++) {
