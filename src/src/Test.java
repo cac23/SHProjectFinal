@@ -42,30 +42,39 @@ final public class Test {
         ServerSocket listener;
         Socket socket;
         BufferedReader reader;
-        int[] leftTurnTime = new int[]{3};
-        int[] leftTurnTimeDuration = new int[]{5};
 
-        int[] currentStreetTime = new int[]{10};
+        int[] navTime = new int[]{8};
+        int[] navTimeDuration = new int[]{10};
+
+        //pause 4 seconds
+        int[] currentStreetTime = new int[]{22};
         int[] currentStreetTimeDuration = new int[]{5};
+        //pause
 
-        int[] lowTireTime = new int[]{20};
+        int[] lowTireTime = new int[]{30};
         int[] lowTireTimeDuration = new int[]{5};
+        //pause
 
-        int[] directionTime = new int[]{30};
+        int[] directionTime = new int[]{40};
         int[] directionTimeDuration = new int[]{5};
+        //ends 39s
+        //pause
+
+        int[] firstSpeedLimitTime = new int[]{50};
+        int[] firstSpeedLimitTimeDuration = new int[]{8};
+        //ends 45s
+        //pause
 
 
-        int[] firstSpeedLimitTime = new int[]{40};
-        int[] firstSpeedLimitTimeDuration = new int[]{3};
+        int[] allShowAtOnceTime = new int[]{60};
+        int[] allShowAtOnceDuration = new int[]{12};
 
-        int[] secondSpeedLimitTime = new int[]{45};
-        int[] secondSpeedLimitTimeDuration = new int[]{5};
 
 
         boolean speedFirstReceived = false;
         long startTime = System.currentTimeMillis();
 
-        Image turnLeftImage, speedLimitImageOne, speedLimitImageTwo, lowTirePressureImage, compassImage;
+        Image turnLeftImage, speedLimitImageOne, speedLimitImageTwo, lowTirePressureImage, compassImage, navImage;
 
         public DrawPanel() {
             try {
@@ -74,42 +83,38 @@ final public class Test {
                 reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 System.out.println("Client Connected!");
                 System.out.println("Game actually started: " + System.currentTimeMillis());
-                    turnLeftImage = ImageIO.read(getClass().getResource("nav.png"));
+                    turnLeftImage = ImageIO.read(getClass().getResource("leftTurn_white.png"));
                     speedLimitImageOne = ImageIO.read(getClass().getResource("firstSpeedLimitSign.png"));
                     speedLimitImageTwo = ImageIO.read(getClass().getResource("secondSpeedLimitSign.png"));
                     compassImage = ImageIO.read(getClass().getResource("directionAndCompass.png"));
                     lowTirePressureImage = ImageIO.read(getClass().getResource("lowTirePressure.png"));
+                    navImage = ImageIO.read(getClass().getResource("nav_white.png"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         public void paintComponent(Graphics g) {
-            System.out.println("paintcomponent");
             System.out.println("Current time: " + System.currentTimeMillis());
             long currentTime = System.currentTimeMillis();
             long elapsedTime = currentTime - startTime;
 
-            /* left turn signal */
-            for(int i =0; i < leftTurnTime.length; i++) {
-                long time1 = leftTurnTime[i]*1000;
-                if (elapsedTime > time1 && (elapsedTime<time1 +1000*leftTurnTimeDuration[i])) {
-                    g.drawImage(turnLeftImage, 900, 1100, turnLeftImage.getWidth(null), turnLeftImage.getHeight(null), null);
-                }
-            }
+//            /* left turn signal */
+//            for(int i =0; i < leftTurnTime.length; i++) {
+//                long time1 = leftTurnTime[i]*1000;
+//                int leftWidth = (turnLeftImage.getWidth(null)/3);
+//                int leftHeight = (turnLeftImage.getHeight(null)/3);
+//                if (elapsedTime > time1 && (elapsedTime<time1 +1000*leftTurnTimeDuration[i])) {
+//                    g.drawImage(turnLeftImage, 1000, 1200, leftWidth, leftHeight, null);
+//                }
+//            }
 
-             /* first speed limit */
+            /* first speed limit */
             for(int i =0; i < firstSpeedLimitTime.length; i++) {
                 long time2 = firstSpeedLimitTime[i]*1000;
+                int firstWidth = (speedLimitImageTwo.getWidth(null)/3);
+                int firstHeight = (speedLimitImageTwo.getHeight(null)/3);
                 if (elapsedTime > time2 && (elapsedTime<(time2 +1000*firstSpeedLimitTimeDuration[i]))) {
-                    g.drawImage(speedLimitImageOne, 1000, 1100, speedLimitImageOne.getWidth(null), speedLimitImageOne.getHeight(null), null);
-                }
-            }
-
-             /* second speed limit */
-            for(int i =0; i < secondSpeedLimitTime.length; i++) {
-                long time3 = secondSpeedLimitTime[i]*1000;
-                if (elapsedTime > time3 && (elapsedTime<(time3 +1000*secondSpeedLimitTimeDuration[i]))) {
-                    g.drawImage(speedLimitImageTwo, 1000, 1100, speedLimitImageTwo.getWidth(null), speedLimitImageTwo.getHeight(null), null);
+                    g.drawImage(speedLimitImageTwo, 900, 1300, firstWidth, firstHeight, null);
                 }
             }
 
@@ -118,8 +123,8 @@ final public class Test {
                 long time4 = currentStreetTime[i]*1000;
                 if (elapsedTime > time4 && (elapsedTime<(time4 +1000*currentStreetTimeDuration[i]))) {
                         g.setColor(Color.WHITE);
-                        g.setFont(new Font("TimesRoman", Font.BOLD, 100));
-                        g.drawString("Market St", 1100, 1200);
+                        g.setFont(new Font("TimesRoman", Font.BOLD, 80));
+                        g.drawString("Market St", 700, 1400);
                 }
             }
 
@@ -127,15 +132,49 @@ final public class Test {
             for(int i =0; i < lowTireTime.length; i++) {
                 long time5 = lowTireTime[i]*1000;
                 if (elapsedTime > time5 && (elapsedTime<(time5 +1000*lowTireTimeDuration[i]))) {
-                    g.drawImage(lowTirePressureImage, 900, 1200, lowTirePressureImage.getWidth(null), lowTirePressureImage.getHeight(null), null);
+                    g.drawImage(lowTirePressureImage, 900, 1180, lowTirePressureImage.getWidth(null), lowTirePressureImage.getHeight(null), null);
                 }
             }
 
             /* direction */
             for(int i =0; i < directionTime.length; i++) {
                 long time6 = directionTime[i]*1000;
+                int compassWidth = (compassImage.getWidth(null))/6;
+                int compassHeight = (compassImage.getHeight(null))/6;
                 if (elapsedTime > time6 && (elapsedTime<(time6 +1000*directionTimeDuration[i]))) {
-                    g.drawImage(compassImage, 1000, 1100, compassImage.getWidth(null), compassImage.getHeight(null), null);
+                    g.drawImage(compassImage, 1000, 1190, compassWidth, compassHeight, null);
+                }
+            }
+
+            /* navigation */
+            for(int i =0; i < navTime.length; i++) {
+                long time7 = navTime[i]*1000;
+                int navWidth = (navImage.getWidth(null))/4;
+                int navHeight = (navImage.getHeight(null))/4;
+                if (elapsedTime > time7 && (elapsedTime<(time7 +1000*navTimeDuration[i]))) {
+                    g.drawImage(navImage, 900, 1250, navWidth, navHeight, null);
+                }
+            }
+
+
+            /* all at once */
+            for(int i=0; i <allShowAtOnceTime.length; i++) {
+                long time8 = allShowAtOnceTime[i]*1000;
+                if (elapsedTime > time8 && (elapsedTime<(time8 + 1000*allShowAtOnceDuration[i]))) {
+                    int navWidth = (navImage.getWidth(null))/4;
+                    int navHeight = (navImage.getHeight(null))/4;
+                    int compassWidth = (compassImage.getWidth(null))/7;
+                    int compassHeight = (compassImage.getHeight(null))/7;
+                    int firstWidth = (turnLeftImage.getWidth(null)/6);
+                    int firstHeight = (turnLeftImage.getHeight(null)/6);
+                    g.drawImage(navImage, 1000, 1250, navWidth, navHeight, null);
+                    g.setColor(Color.WHITE);
+                    g.setFont(new Font("TimesRoman", Font.BOLD, 40));
+                    g.drawString("Market St", 1000, 1200);
+                    g.drawImage(lowTirePressureImage, 600, 1200, lowTirePressureImage.getWidth(null), lowTirePressureImage.getHeight(null), null);
+                    g.drawImage(compassImage, 400, 1150, compassWidth, compassHeight, null);
+                    g.drawImage(speedLimitImageTwo, 1280, 1200, firstWidth, firstHeight, null);
+
                 }
             }
 
