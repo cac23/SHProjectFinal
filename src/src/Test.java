@@ -94,12 +94,11 @@ final public class Test {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
 
         PrintWriter writer;
         public void paintComponent(Graphics g) {
-            System.out.println("Current time: " + System.currentTimeMillis());
+            //System.out.println("Current time: " + System.currentTimeMillis());
             DateFormat formatter1;
 
 
@@ -119,6 +118,8 @@ final public class Test {
                 int firstWidth = (speedLimitImageTwo.getWidth(null)/3);
                 int firstHeight = (speedLimitImageTwo.getHeight(null)/3);
                 if (elapsedTime > time2 && (elapsedTime<(time2 +1000*firstSpeedLimitTimeDuration[i]))) {
+                    writer.write(formatter1.format(date) + "speed limit" + "\n");
+                    writer.flush();
                     g.drawImage(speedLimitImageTwo, 900, 1300, firstWidth, firstHeight, null);
                 }
             }
@@ -127,6 +128,8 @@ final public class Test {
             for(int i = 0; i < currentStreetTime.length; i++) {
                 long time4 = currentStreetTime[i]*1000;
                 if (elapsedTime > time4 && (elapsedTime<(time4 +1000*currentStreetTimeDuration[i]))) {
+                    writer.write(formatter1.format(date) + "current street" + "\n");
+                    writer.flush();
                         g.setColor(Color.WHITE);
                         g.setFont(new Font("TimesRoman", Font.BOLD, 80));
                         g.drawString("Market St", 700, 1400);
@@ -137,6 +140,8 @@ final public class Test {
             for(int i =0; i < lowTireTime.length; i++) {
                 long time5 = lowTireTime[i]*1000;
                 if (elapsedTime > time5 && (elapsedTime<(time5 +1000*lowTireTimeDuration[i]))) {
+                    writer.write(formatter1.format(date) + "tire pressure" + "\n");
+                    writer.flush();
                     g.drawImage(lowTirePressureImage, 900, 1180, lowTirePressureImage.getWidth(null), lowTirePressureImage.getHeight(null), null);
                 }
             }
@@ -147,6 +152,8 @@ final public class Test {
                 int compassWidth = (compassImage.getWidth(null))/6;
                 int compassHeight = (compassImage.getHeight(null))/6;
                 if (elapsedTime > time6 && (elapsedTime<(time6 +1000*directionTimeDuration[i]))) {
+                    writer.write(formatter1.format(date) + "compass" + "\n");
+                    writer.flush();
                     g.drawImage(compassImage, 1000, 1190, compassWidth, compassHeight, null);
                 }
             }
@@ -157,6 +164,8 @@ final public class Test {
                 int navWidth = (navImage.getWidth(null))/4;
                 int navHeight = (navImage.getHeight(null))/4;
                 if (elapsedTime > time7 && (elapsedTime<(time7 +1000*navTimeDuration[i]))) {
+                    writer.write(formatter1.format(date) + "navigation" + "\n");
+                    writer.flush();
                     g.drawImage(navImage, 900, 1250, navWidth, navHeight, null);
                 }
             }
@@ -173,6 +182,8 @@ final public class Test {
                     int firstWidth = (turnLeftImage.getWidth(null)/6);
                     int firstHeight = (turnLeftImage.getHeight(null)/6);
                     g.drawImage(navImage, 1000, 1250, navWidth, navHeight, null);
+                    writer.write(formatter1.format(date) + "all at once" + "\n");
+                    writer.flush();
                     g.setColor(Color.WHITE);
                     g.setFont(new Font("TimesRoman", Font.BOLD, 40));
                     g.drawString("Market St", 1000, 1200);
