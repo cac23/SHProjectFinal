@@ -79,7 +79,7 @@ final public class Test {
 
         public DrawPanel() throws FileNotFoundException {
             try {
-                writer = new PrintWriter(new File("test.txt"));
+                writer = new PrintWriter(new File("participant20.txt"));
                 listener = new ServerSocket(3001);
                 socket = listener.accept();
                 reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
